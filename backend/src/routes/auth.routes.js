@@ -3,9 +3,17 @@ const authController = require('../controllers/auth.controller');
 
 const router = express.Router();
 
+// User Routes
 router.post('/user/register', authController.registerUser);
 router.post('/user/login', authController.loginUser);
-router.post('/user/logout', authController.logoutUser);
+router.get('/user/logout', authController.logoutUser);
+
+// Food Partner Routes
+router.post('/food-partner/register', authController.registerFoodPartner);
+router.post('/food-partner/login', authController.loginFoodPartner);
+router.get('/food-partner/logout', authController.logoutFoodPartner);
+
+//
 
 
 module.exports = router;
