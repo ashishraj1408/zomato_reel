@@ -1,0 +1,22 @@
+/user/register => user register form
+/user/login => user login form
+
+/food-partner/register => food
+-partner register form
+/food-partner/login => food-partner login form
+
+/restaurant/menu => restaurant menu management
+/restaurant/orders => restaurant orders dashboard
+/restaurant/profile => restaurant profile management
+
+/customer/home => customer home page
+/customer/search => food search and filter
+/customer/cart => shopping cart
+/customer/orders => customer order history
+/customer/profile => customer profile management
+
+/admin/dashboard => admin dashboard
+/admin/users => manage users
+/admin/restaurants => manage restaurants
+/admin/orders => manage all orders
+

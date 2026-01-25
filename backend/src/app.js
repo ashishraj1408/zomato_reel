@@ -1,5 +1,5 @@
 const express = require('express');
-const cookierParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/auth.routes');
 const foodRoutes = require('./routes/food.routes');
 
@@ -7,7 +7,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cookierParser());
+app.use(cookieParser());
 
 // Test Route
 app.get("/", (req, res) => {

@@ -10,8 +10,9 @@ const upload = multer({
 })
 
 
-
+// create food api
 router.post('/', authMiddleware.authFoodPartnerMiddleware, upload.single("video"), foodController.createFood)
+// get all food api
 router.get('/', authMiddleware.authUserMiddleware, foodController.getFoodItems)
 
 // here authMiddleware are not work on fooditems api 
