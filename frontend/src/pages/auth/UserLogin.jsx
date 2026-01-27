@@ -1,16 +1,33 @@
 import React, { useState } from "react";
 import "../../styles/theme.css";
 import "../../styles/auth.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const UserLogin = () => {
+  const navigate = useNavigate();
+
+  // ✅ REQUIRED STATE (this fixes the error)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add login logic here
-    console.log("Login attempt:", { email, password, rememberMe });
+
+    const response = await axios.post(
+      "http://localhost:3000/api/v1/auth/user/login",
+      {
+        email,
+        password,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    console.log("Login response:", response.data);
+    navigate("/");
   };
 
   return (
@@ -21,12 +38,13 @@ const UserLogin = () => {
           <h1 className="auth-header-title">Welcome Back</h1>
           <p className="auth-header-subtitle">Login to your account</p>
           <p className="text-sm font-bold bg-black font-Calibri text-white">
-            Tailwind is working as🚀
+            Tailwind is working 🚀
           </p>
         </div>
 
         <div className="auth-form-container">
           <form onSubmit={handleSubmit}>
+            {/* Email */}
             <div className="form-group">
               <label htmlFor="email" className="form-label">
                 Email Address
@@ -42,6 +60,7 @@ const UserLogin = () => {
               />
             </div>
 
+            {/* Password */}
             <div className="form-group">
               <label htmlFor="password" className="form-label">
                 Password
@@ -57,6 +76,7 @@ const UserLogin = () => {
               />
             </div>
 
+            {/* Remember me */}
             <div className="switch-container">
               <label className="checkbox-group">
                 <input

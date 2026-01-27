@@ -1,261 +1,180 @@
-import React, { useState } from 'react';
-import '../../styles/theme.css';
-import '../../styles/auth.css';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+// global styles
+import "../../styles/theme.css";
+import "../../styles/auth.css";
 
 const FoodPartnerRegister = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    restaurantName: '',
-    ownerFirstName: '',
-    ownerLastName: '',
-    email: '',
-    phone: '',
-    restaurantType: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    password: '',
-    confirmPassword: '',
-    agreeTerms: false,
+    name: "",
+    contactName: "",
+    email: "",
+    phone: "",
+    password: "",
+    address: "",
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add registration logic here
-    console.log('Food Partner Registration attempt:', formData);
+
+    try {
+      const payload = {
+        name: formData.name,
+        contactName: formData.contactName,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        address: formData.address,
+      };
+
+      console.log("Submitting payload:", payload);
+
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/auth/food-partner/register",
+        payload,
+        { withCredentials: true }
+      );
+
+      console.log("Registration success:", response.data);
+      navigate("/create-food");
+    } catch (error) {
+      console.error(
+        "Registration failed:",
+        error.response?.data || error.message
+      );
+      alert(error.response?.data?.message || "Registration failed");
+    }
   };
 
   return (
     <div className="auth-container">
       <div className="auth-wrapper">
+
+        {/* HEADER */}
         <div className="auth-header">
           <div className="auth-header-logo">🏪 Zomato Partner</div>
           <h1 className="auth-header-title">Register Your Restaurant</h1>
-          <p className="auth-header-subtitle">Start selling on Zomato today</p>
+          <p className="auth-header-subtitle">
+            Start selling on Zomato today
+          </p>
         </div>
 
+        {/* FORM */}
         <div className="auth-form-container">
           <form onSubmit={handleSubmit}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-md)' }}>
-              <div className="form-group">
-                <label htmlFor="ownerFirstName" className="form-label">
-                  Owner First Name
-                </label>
-                <input
-                  type="text"
-                  id="ownerFirstName"
-                  name="ownerFirstName"
-                  className="form-input"
-                  placeholder="First name"
-                  value={formData.ownerFirstName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
 
-              <div className="form-group">
-                <label htmlFor="ownerLastName" className="form-label">
-                  Owner Last Name
-                </label>
-                <input
-                  type="text"
-                  id="ownerLastName"
-                  name="ownerLastName"
-                  className="form-input"
-                  placeholder="Last name"
-                  value={formData.ownerLastName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-
+            {/* Restaurant Name */}
             <div className="form-group">
-              <label htmlFor="restaurantName" className="form-label">
-                Restaurant Name
-              </label>
+              <label className="form-label">Restaurant Name</label>
               <input
                 type="text"
-                id="restaurantName"
-                name="restaurantName"
+                name="name"
                 className="form-input"
-                placeholder="Enter your restaurant name"
-                value={formData.restaurantName}
+                placeholder="Enter restaurant name"
+                value={formData.name}
                 onChange={handleChange}
                 required
               />
             </div>
 
+            {/* Contact Name */}
             <div className="form-group">
-              <label htmlFor="restaurantType" className="form-label">
-                Cuisine Type
-              </label>
-              <select
-                id="restaurantType"
-                name="restaurantType"
-                className="form-select"
-                value={formData.restaurantType}
+              <label className="form-label">Contact Person Name</label>
+              <input
+                type="text"
+                name="contactName"
+                className="form-input"
+                placeholder="Enter contact person name"
+                value={formData.contactName}
                 onChange={handleChange}
                 required
-              >
-                <option value="">Select cuisine type</option>
-                <option value="italian">Italian</option>
-                <option value="chinese">Chinese</option>
-                <option value="indian">Indian</option>
-                <option value="mexican">Mexican</option>
-                <option value="fast-food">Fast Food</option>
-                <option value="fusion">Fusion</option>
-                <option value="bakery">Bakery</option>
-                <option value="desserts">Desserts</option>
-              </select>
+              />
             </div>
 
+            {/* Email */}
             <div className="form-group">
-              <label htmlFor="email" className="form-label">
-                Email Address
-              </label>
+              <label className="form-label">Email Address</label>
               <input
                 type="email"
-                id="email"
                 name="email"
                 className="form-input"
-                placeholder="Enter your business email"
+                placeholder="Enter business email"
                 value={formData.email}
                 onChange={handleChange}
                 required
               />
             </div>
 
+            {/* Phone */}
             <div className="form-group">
-              <label htmlFor="phone" className="form-label">
-                Phone Number
-              </label>
+              <label className="form-label">Phone Number</label>
               <input
                 type="tel"
-                id="phone"
                 name="phone"
                 className="form-input"
-                placeholder="Enter your business phone"
+                placeholder="Enter phone number"
                 value={formData.phone}
                 onChange={handleChange}
                 required
               />
             </div>
 
+            {/* Password */}
             <div className="form-group">
-              <label htmlFor="address" className="form-label">
-                Restaurant Address
-              </label>
-              <input
-                type="text"
-                id="address"
-                name="address"
-                className="form-input"
-                placeholder="Street address"
-                value={formData.address}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-md)' }}>
-              <div className="form-group">
-                <label htmlFor="city" className="form-label">
-                  City
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  className="form-input"
-                  placeholder="City"
-                  value={formData.city}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="postalCode" className="form-label">
-                  Postal Code
-                </label>
-                <input
-                  type="text"
-                  id="postalCode"
-                  name="postalCode"
-                  className="form-input"
-                  placeholder="Postal code"
-                  value={formData.postalCode}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">
-                Password
-              </label>
+              <label className="form-label">Password</label>
               <input
                 type="password"
-                id="password"
                 name="password"
                 className="form-input"
-                placeholder="Create a password"
+                placeholder="Create password"
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
               <div className="form-helper-text">
-                Must be at least 8 characters long
+                Minimum 8 characters required
               </div>
             </div>
 
+            {/* Address */}
             <div className="form-group">
-              <label htmlFor="confirmPassword" className="form-label">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
+              <label className="form-label">Restaurant Address</label>
+              <textarea
+                name="address"
                 className="form-input"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
+                placeholder="Enter full restaurant address"
+                value={formData.address}
                 onChange={handleChange}
+                rows={3}
                 required
               />
             </div>
 
-            <div className="form-group">
-              <label className="checkbox-group">
-                <input
-                  type="checkbox"
-                  name="agreeTerms"
-                  className="form-checkbox"
-                  checked={formData.agreeTerms}
-                  onChange={handleChange}
-                  required
-                />
-                I agree to the Partner Terms & Conditions and Privacy Policy
-              </label>
-            </div>
-
-            <button type="submit" className="btn btn-primary" style={{ marginTop: 'var(--spacing-lg)' }}>
+            {/* Submit */}
+            <button
+              type="submit"
+              className="btn btn-primary"
+              style={{ marginTop: "var(--spacing-lg)" }}
+            >
               Register Restaurant
             </button>
           </form>
 
+          {/* Footer */}
           <div className="auth-form-footer">
             <p className="auth-form-footer-text">
-              Already registered?{' '}
+              Already registered?{" "}
               <a href="/foodpartner-login" className="auth-form-footer-link">
                 Sign in
               </a>
