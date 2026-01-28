@@ -15,19 +15,32 @@ const UserLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await axios.post(
-      "http://localhost:3000/api/v1/auth/user/login",
-      {
-        email,
-        password,
-      },
-      {
-        withCredentials: true,
-      }
-    );
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/auth/user/login",
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        },
+      );
 
-    console.log("Login response:", response.data);
-    navigate("/");
+      console.log("Login response:", response.data);
+
+      // ✅ SAVE TOKEN (THIS IS THE MISSING PIECE)
+      if (response.data.token) {
+        localStorage.setItem("userToken", response.data.token);
+      } else {
+        console.error("Token not found in login response");
+        return;
+      }
+
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (

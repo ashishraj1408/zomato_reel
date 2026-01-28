@@ -8,6 +8,7 @@ import FoodPartnerLogin from '../pages/auth/FoodPartnerLogin';
 import FoodPartnerRegister from '../pages/auth/FoodPartnerRegister';
 import Home from '../pages/general/Home';
 import CreateFood from '../pages/food-partner/CreateFood';
+import Profile from '../pages/food-partner/Profile';
 
 // Import your other page components here
 // import Home from '../pages/Home';
@@ -33,6 +34,7 @@ const AppRoutes = () => {
                 <Route path='/food-partner/register' element={<FoodPartnerRegister />} />
                 <Route path="/" element={<Home/>} />
                 <Route path="/create-food" element={<CreateFood/>}/>
+                <Route path="/food-partner/:id" element={<Profile />} />
                 {/* Add more routes as needed */}
             </Routes>
         </Router>
