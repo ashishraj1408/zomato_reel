@@ -20,9 +20,7 @@ async function createFood(req, res) {
     food: foodItem
   })
 
-  console.log(fileUploadResult)
   
-  res.send("food item created");
 }
 
 async function getFoodItems(req, res){

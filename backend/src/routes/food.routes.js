@@ -17,4 +17,5 @@ router.get('/', authMiddleware.authUserMiddleware, foodController.getFoodItems)
 
 // here authMiddleware are not work on fooditems api 
 
+
 module.exports = router;

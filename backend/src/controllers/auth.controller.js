@@ -9,7 +9,6 @@ const COOKIE_OPTIONS = {
   secure: process.env.NODE_ENV === "production",
 };
 
-
 async function registerUser(req, res) {
   const { fullName, email, password } = req.body;
 
@@ -63,10 +62,13 @@ async function loginUser(req, res) {
     { expiresIn: "7d" },
   );
 
+  // OPTIONAL: keep cookie if you want
   res.cookie("user_token", token, COOKIE_OPTIONS);
 
-  res.status(200).json({
+  // ✅ REQUIRED: return token in JSON
+  return res.status(200).json({
     message: "User logged in successfully",
+    token, // 🔥 THIS LINE FIXES EVERYTHING
     user: {
       _id: user._id,
       email: user.email,
@@ -96,7 +98,7 @@ async function registerFoodPartner(req, res) {
     phone,
     password: hashedPassword,
     address,
-    contactName
+    contactName,
   });
 
   const token = jwt.sign(
@@ -115,8 +117,7 @@ async function registerFoodPartner(req, res) {
       email: foodPartner.email,
       phone: foodPartner.phone,
       address: foodPartner.address,
-      contactName: foodPartner.contactName
-
+      contactName: foodPartner.contactName,
     },
   });
 }
