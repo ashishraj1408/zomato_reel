@@ -1,126 +1,100 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../../styles/profile.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-const FoodItemCard = ({ video }) => (
-  <div className="food-item-card">
-    <div className="food-item-image">
+/* VIDEO CARD */
+const VideoCard = ({ video, activeVideo, setActiveVideo }) => {
+  const videoRef = useRef(null);
+
+  const handleClick = () => {
+    // pause previously playing video
+    if (activeVideo && activeVideo !== videoRef.current) {
+      activeVideo.pause();
+    }
+
+    videoRef.current.muted = false;
+    videoRef.current.play();
+    setActiveVideo(videoRef.current);
+  };
+
+  return (
+    <div className="ig-video-card" onClick={handleClick}>
       <video
+        ref={videoRef}
         src={video.video}
-        controls
-        muted
-        className="food-video"
+        playsInline
+        preload="metadata"
       />
     </div>
-    {video.description && (
-      <div className="food-item-name">{video.description}</div>
-    )}
-  </div>
-);
+  );
+};
 
 const Profile = () => {
   const { id } = useParams();
   const [profile, setProfile] = useState(null);
   const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [activeVideo, setActiveVideo] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/v1/food-partner/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-            },
-          }
-        );
+      const API_URL = import.meta.env.VITE_API_URL;
+      const res = await axios.get(
+        `${API_URL}/food-partner/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        }
+      );
 
-        setProfile(response.data.foodPartner);
-        setVideos(response.data.foodPartner.foodItems || []);
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
+      setProfile(res.data.foodPartner);
+      setVideos(res.data.foodPartner.foodItems || []);
     };
 
     fetchProfile();
   }, [id]);
 
-  if (loading)
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner">Loading...</div>
-      </div>
-    );
-
-  if (error)
-    return (
-      <div className="error-container">
-        <div className="error-message">Error: {error}</div>
-      </div>
-    );
-
-  if (!profile)
-    return (
-      <div className="error-container">
-        <div className="error-message">Profile not found</div>
-      </div>
-    );
+  if (!profile) return null;
 
   return (
-    <div className="profile-page-container">
-      {/* Main Card */}
-      <div className="profile-card">
-        {/* Header Section */}
-        <div className="card-header">
-          <h1 className="card-title">{profile.name}</h1>
-          <p className="card-subtitle">{profile.address || "Best food in town"}</p>
+    <div className="ig-profile-container">
+      {/* PROFILE HEADER */}
+      <div className="ig-profile-header">
+        <div className="ig-avatar">
+          {profile.name.charAt(0)}
         </div>
 
-        {/* Stats Section */}
-        <div className="card-stats">
-          <div className="stat-item">
-            <span className="stat-label">Total Users</span>
-            <span className="stat-number">2.4k</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-label">Customer Served</span>
-            <span className="stat-number">12.3k</span>
-          </div>
-        </div>
+        <div className="ig-profile-info">
+          <h2>{profile.name}</h2>
 
-        {/* Contact Info */}
-        <div className="card-contact">
-          <div className="contact-row">
-            <span className="contact-label">Phone:</span>
-            <span className="contact-value">{profile.phone}</span>
+          <div className="ig-stats">
+            <span><b>{videos.length}</b> posts</span>
+            <span><b>2.4k</b> followers</span>
+            <span><b>1.1k</b> following</span>
           </div>
-          <div className="contact-row">
-            <span className="contact-label">Email:</span>
-            <span className="contact-value">{profile.email}</span>
+
+          <p className="ig-bio">
+            {profile.address || "Best food in town 🍔🔥"}
+          </p>
+
+          <div className="ig-actions">
+            <button className="ig-btn primary">Follow</button>
+            <button className="ig-btn secondary">Contact</button>
           </div>
         </div>
       </div>
 
-      {/* Food Items Section */}
-      <div className="food-section">
-        <h2 className="section-title">Featured Dishes</h2>
-        {videos.length === 0 ? (
-          <div className="empty-state">
-            <p>No dishes uploaded yet</p>
-          </div>
-        ) : (
-          <div className="food-items-grid">
-            {videos.map((video) => (
-              <FoodItemCard key={video._id} video={video} />
-            ))}
-          </div>
-        )}
+      {/* VIDEOS GRID */}
+      <div className="ig-posts-grid">
+        {videos.map((video) => (
+          <VideoCard
+            key={video._id}
+            video={video}
+            activeVideo={activeVideo}
+            setActiveVideo={setActiveVideo}
+          />
+        ))}
       </div>
     </div>
   );

@@ -16,8 +16,10 @@ const UserLogin = () => {
     e.preventDefault();
 
     try {
+      const API_URL = import.meta.env.VITE_API_URL;
+
       const response = await axios.post(
-        "http://localhost:3000/api/v1/auth/user/login",
+        `${API_URL}/auth/user/login`,
         {
           email,
           password,
@@ -29,7 +31,7 @@ const UserLogin = () => {
 
       console.log("Login response:", response.data);
 
-      // ✅ SAVE TOKEN (THIS IS THE MISSING PIECE)
+      // ✅ SAVE TOKEN
       if (response.data.token) {
         localStorage.setItem("userToken", response.data.token);
       } else {
@@ -39,7 +41,7 @@ const UserLogin = () => {
 
       navigate("/");
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Login failed:", error.response?.data || error.message);
     }
   };
 

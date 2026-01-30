@@ -29,6 +29,8 @@ const FoodPartnerRegister = () => {
     e.preventDefault();
 
     try {
+      const API_URL = import.meta.env.VITE_API_URL;
+
       const payload = {
         name: formData.name,
         contactName: formData.contactName,
@@ -38,12 +40,10 @@ const FoodPartnerRegister = () => {
         address: formData.address,
       };
 
-      console.log("Submitting payload:", payload);
-
       const response = await axios.post(
-        "http://localhost:3000/api/v1/auth/food-partner/register",
+        `${API_URL}/auth/food-partner/register`,
         payload,
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       console.log("Registration success:", response.data);
@@ -51,7 +51,7 @@ const FoodPartnerRegister = () => {
     } catch (error) {
       console.error(
         "Registration failed:",
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
       alert(error.response?.data?.message || "Registration failed");
     }
@@ -60,20 +60,16 @@ const FoodPartnerRegister = () => {
   return (
     <div className="auth-container">
       <div className="auth-wrapper">
-
         {/* HEADER */}
         <div className="auth-header">
           <div className="auth-header-logo">🏪 Zomato Partner</div>
           <h1 className="auth-header-title">Register Your Restaurant</h1>
-          <p className="auth-header-subtitle">
-            Start selling on Zomato today
-          </p>
+          <p className="auth-header-subtitle">Start selling on Zomato today</p>
         </div>
 
         {/* FORM */}
         <div className="auth-form-container">
           <form onSubmit={handleSubmit}>
-
             {/* Restaurant Name */}
             <div className="form-group">
               <label className="form-label">Restaurant Name</label>

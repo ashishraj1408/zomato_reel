@@ -17,15 +17,17 @@ const FoodPartnerLogin = () => {
     setLoading(true);
 
     try {
+      const API_URL = import.meta.env.VITE_API_URL;
+
       const response = await axios.post(
-        "http://localhost:3000/api/v1/auth/food-partner/login",
+        `${API_URL}/auth/food-partner/login`,
         {
           email,
           password,
         },
         {
           withCredentials: true,
-        }
+        },
       );
 
       console.log("Food Partner Login response:", response.data);
@@ -111,10 +113,7 @@ const FoodPartnerLogin = () => {
           <div className="auth-form-footer">
             <p className="auth-form-footer-text">
               New to Zomato Partner?{" "}
-              <a
-                href="/foodpartner-register"
-                className="auth-form-footer-link"
-              >
+              <a href="/foodpartner-register" className="auth-form-footer-link">
                 Register here
               </a>
             </p>

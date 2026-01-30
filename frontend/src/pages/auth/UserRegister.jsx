@@ -26,25 +26,28 @@ const UserRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const firstName = e.target.firstName.value;
     const lastName = e.target.lastName.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
 
+    const API_URL = import.meta.env.VITE_API_URL;
+
     const response = await axios.post(
-      "http://localhost:3000/api/v1/auth/user/register",
+      `${API_URL}/auth/user/register`,
       {
         fullName: firstName + " " + lastName,
         email,
         password,
-      },{
-        withCredentials: true
-      }
-      
+      },
+      {
+        withCredentials: true,
+      },
     );
 
     console.log(response.data);
-    navigate("/")
+    navigate("/");
   };
 
   return (

@@ -142,3 +142,40 @@ code {
   background-color: var(--background-color);
   transition: background-color var(--transition-normal);
 }
+
+/* Theme override classes - allows explicit controlling of the theme via JS classes */
+.light-mode {
+  /* Light theme values (same as :root default) */
+  --primary-color: #e91e63;
+  --primary-light: #f06292;
+  --primary-dark: #ad1457;
+  --secondary-color: #2196f3;
+  --secondary-light: #64b5f6;
+  --secondary-dark: #1565c0;
+
+  --background-color: #ffffff;
+  --surface-color: #f5f5f5;
+  --surface-secondary: #eeeeee;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --text-disabled: #bdbdbd;
+  --border-color: #e0e0e0;
+}
+
+.dark-mode {
+  /* Dark theme values (same as prefers-color-scheme: dark override) */
+  --primary-color: #f06292;
+  --primary-light: #f48fb1;
+  --primary-dark: #c2185b;
+  --secondary-color: #64b5f6;
+  --secondary-light: #90caf9;
+  --secondary-dark: #1e88e5;
+
+  --background-color: #121212;
+  --surface-color: #1e1e1e;
+  --surface-secondary: #2a2a2a;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-disabled: #666666;
+  --border-color: #333333;
+}
