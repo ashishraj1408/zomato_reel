@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/food', foodRoutes);
+app.use('/api/v1/auth/food', foodRoutes);
 app.use('/api/v1/food-partner', foodPartnerRoutes);
 
 
