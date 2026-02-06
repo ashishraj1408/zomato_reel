@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const CreateFood = () => {
-  const [videoFile, setVideoFile] = useState(null); // { file, preview }
+  const [videoFile, setVideoFile] = useState(null); 
   const [tagName, setTagName] = useState("");
   const [tagDescription, setTagDescription] = useState("");
   const [isDragging, setIsDragging] = useState(false);
@@ -67,7 +67,7 @@ const CreateFood = () => {
     const file = e.target.files?.[0];
     handleFile(file);
 
-    // 🔥 critical: allow selecting same file again
+    //  critical: allow selecting same file again
     e.target.value = null;
   };
 
@@ -98,7 +98,7 @@ const CreateFood = () => {
     e.preventDefault();
 
     if (!videoFile || !tagName.trim()) {
-      console.log("❌ Missing video or name");
+      console.log(" Missing video or name");
       return;
     }
 
@@ -112,7 +112,7 @@ const CreateFood = () => {
       formData.append("name", tagName);
       formData.append("description", tagDescription);
 
-      console.log("📤 Uploading:");
+      console.log(" Uploading:");
       for (let p of formData.entries()) {
         console.log(p[0], p[1]);
       }

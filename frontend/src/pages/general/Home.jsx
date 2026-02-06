@@ -37,7 +37,7 @@ const Home = () => {
     try {
       setLoading(true);
 
-      const response = await axios.get(`${API_URL}/food`, {
+      const response = await axios.get(`${API_URL}/auth/food`, {
         headers: localStorage.getItem("userToken")
           ? { Authorization: `Bearer ${localStorage.getItem("userToken")}` }
           : {},
@@ -68,7 +68,7 @@ const Home = () => {
   const likeVideo = async (video) => {
     try {
       const response = await axios.post(
-        `${API_URL}/food/like`,
+        `${API_URL}/auth/food/like`,
         { foodId: video._id },
         { withCredentials: true },
       );
@@ -99,7 +99,7 @@ const Home = () => {
   const saveVideo = async (video) => {
     try {
       const response = await axios.post(
-        `${API_URL}/food/save`,
+        `${API_URL}/auth/food/save`,
         { foodId: video._id },
         { withCredentials: true },
       );
@@ -118,7 +118,7 @@ const Home = () => {
       console.error("Save failed:", err.response?.data || err.message);
     }
   };
-
+  
   /* ---------------- loading ---------------- */
 
   if (loading) {
@@ -253,6 +253,7 @@ const Home = () => {
           <span>Profile</span>
         </Link>
       </nav>
+
     </>
   );
 };
